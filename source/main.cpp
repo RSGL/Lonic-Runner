@@ -35,7 +35,10 @@ bool AI(){
       return memory.at(distObj).y > memory.at(distObj).x;
 }
 
-int main(){
+int main(int argc, char** argv){
+      std::string hsDir="";
+      if (argc > 1) hsDir = std::string(argv[1]);      
+
       srand(time(NULL));
       std::vector<RSGL::rect> dots;
       std::vector<RSGL::rect> clouds;
@@ -47,7 +50,7 @@ int main(){
             for (int x=(!y); x < 3; x++) Cactuses.insert(Cactuses.end(), { win.r.width+80,  (20*(y-1))+(win.r.width/2-20),  20*(y+1), 45 });
       } Cactuses.insert(Cactuses.end(),{win.r.width+80,(win.r.width/2+20),20,25});
 
-      if (readFile("highScore") != "") highScore=std::stoi(readFile("highScore")); 
+      if (readFile(hsDir+"highScore") != "") highScore=std::stoi(readFile(hsDir+"highScore")); 
       std::string dinoImg="res/images/lonicidle.png";
 
       while(running){
@@ -89,7 +92,7 @@ int main(){
                   } if (init){
                         if (scoreTick >= speed*2){ scoreTick=0; score++; }
                         if (highScore < score){
-                              FILE* f = fopen("highScore","w+");
+                              FILE* f = fopen(std::string(hsDir+"highScore").c_str(),"w+");
                               fwrite(std::to_string(score).c_str(),std::to_string(score).size(),1,f); fclose(f);
                               highScore=score; 
                         }
